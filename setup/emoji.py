@@ -17,11 +17,14 @@ class Emoji(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #screen = pygame.display.get_surface()
 
-        self.addMove(0, 200, 100)
-        print(self.getVelForMove(self.getCurrentMove()))
-        self.vel = self.getVelForMove(self.getCurrentMove())
+        self.addMove(0, 100, 50)
+        self.addMove(100, 100, 50)
+        self.addMove(100, 200, 50)
+        self.addMove(-100, 200, 100)
         self.addMove(50, 50, 100)
         self.addMove(300, 400, 100)
+
+        self.vel = self.getVelForMove(self.getCurrentMove())
 
     def getCurrentMove(self):
         return self.moves[self.moveIndex]
@@ -38,12 +41,11 @@ class Emoji(pygame.sprite.Sprite):
             #print(self.rect)
             move = self.getCurrentMove()
             # area to test if emoji is in
-            TEST_LEN = 2
-            testRect = pygame.Rect(max(0, move[0] - TEST_LEN), move[1] - TEST_LEN, move[0] + TEST_LEN, move[1] + TEST_LEN)
+            TEST_LEN = 25
+            testRect = pygame.Rect(move[0] - TEST_LEN, move[1] - TEST_LEN, move[0] + TEST_LEN, move[1] + TEST_LEN)
 
-            #print("-> " + str(testRect))
-
-            if testRect.colliderect(self.rect):
+            if (self.rect.x < move[0] + TEST_LEN and self.rect.x > move[0] - TEST_LEN
+                and self.rect.y < move[1] + TEST_LEN and self.rect.y > move[1] - TEST_LEN):
                 self.vel = (0, 0)
                 self.rect.x = move[0]
                 self.rect.y = move[1]
@@ -51,6 +53,12 @@ class Emoji(pygame.sprite.Sprite):
                 if not self.finishedMoving():
                     print(str(self.moveIndex) + " / " + str(len(self.moves)))
                     self.vel = self.getVelForMove(self.getCurrentMove())
+
+            #print("-> " + str(testRect))
+
+            # better way to do this, not using it because it wasn't work well
+            #if testRect.colliderect(self.rect):
+                
 
             self.addVel(self.vel * delta)
 
