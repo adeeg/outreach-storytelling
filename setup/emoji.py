@@ -1,30 +1,34 @@
 import pygame
+from setup.timer import Timer
+from setup.vector2 import Vector2
+from setup.util import lerp
 
 class Emoji(pygame.sprite.Sprite):
     """ moves       :: []
         moveIndex   :: Int
-        vel         :: (velX, velY) """
+        vel         :: (velX, velY)
+        timer       :: Timer """
 
     def __init__(self, MAX_MOVES=25):
         self.MAX_MOVES = 25
         self.moves = []
         self.moveIndex = 0
-        self.vel = (0, 0)
-        
+        self.vel = (0, 0)      
+        self.timer = None  
 
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("test.png")
         self.rect = self.image.get_rect()
         #screen = pygame.display.get_surface()
 
-        self.addMove(0, 100, 50)
-        self.addMove(100, 100, 50)
-        self.addMove(100, 200, 50)
-        self.addMove(-100, 200, 100)
-        self.addMove(50, 50, 100)
-        self.addMove(300, 400, 100)
+        self.addMove(0, 500, 1000)
+        #self.addMove(100, 100, 100)
+        #self.addMove(100, 200, 150)
+        #self.addMove(-100, 200, 200)
+        #self.addMove(50, 50, 100)
+        #self.addMove(300, 400, 50)
 
-        self.vel = self.getVelForMove(self.getCurrentMove())
+        self.startNextMove()
 
     def getCurrentMove(self):
         return self.moves[self.moveIndex]
@@ -34,10 +38,30 @@ class Emoji(pygame.sprite.Sprite):
     def getVelForMove(self, move):
         vel = ((move[0] - self.rect.x) / move[2], (move[1] - self.rect.y) / move[2])
         return vel
-
+    
+    def startNextMove(self):
+        if self.finishedMoving():
+            self.vel = (0, 0)
+        else:
+            self.vel = self.getVelForMove(self.getCurrentMove())
+            self.timer = Timer(self.getCurrentMove()[2])
+            self.timer.start()
+        
     # called once per frame
     def update(self, delta):
+        lerp(Vector2(3, 4), Vector2(7, 15), 0)
+
         if not self.finishedMoving():
+            if self.timer.isFinished():
+                self.rect.x = self.getCurrentMove()[0]
+                self.rect.y = self.getCurrentMove()[1]
+                # move onto the next move
+                self.incMoveIndex()
+                self.startNextMove()
+            
+            self.addVel((self.vel[0] * delta, self.vel[1] * delta * 100))
+
+        """ if not self.finishedMoving():
             #print(self.rect)
             move = self.getCurrentMove()
             # area to test if emoji is in
@@ -52,7 +76,7 @@ class Emoji(pygame.sprite.Sprite):
                 self.incMoveIndex()
                 if not self.finishedMoving():
                     print(str(self.moveIndex) + " / " + str(len(self.moves)))
-                    self.vel = self.getVelForMove(self.getCurrentMove())
+                    self.vel = self.getVelForMove(self.getCurrentMove()) """
 
             #print("-> " + str(testRect))
 
@@ -60,10 +84,10 @@ class Emoji(pygame.sprite.Sprite):
             #if testRect.colliderect(self.rect):
                 
 
-            self.addVel(self.vel * delta)
+            
 
     def incMoveIndex(self):
-        if self.moveIndex > len(self.moves) - 2:
+        if self.moveIndex > len(self.moves) - 1:
             self.moveIndex = -1
         else:
             self.moveIndex += 1

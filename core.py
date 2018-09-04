@@ -9,6 +9,7 @@ if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
 from setup.emoji import Emoji
+from setup.scene import Scene
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
@@ -35,8 +36,11 @@ print(textpos)
 
 screen.blit(background, (0, 0))
 
+c = 0
 while 1:
-    delta = clock.tick(60)
+    c += 1
+    
+    delta = 1 / clock.tick(60)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -46,7 +50,10 @@ while 1:
     
     emoji.update(delta)
 
-    text = font.render(str(pygame.time.get_ticks() / 1000) + ": " + str(emoji.rect.x) + ","  + str(emoji.rect.y), 1, (255, 255, 255))
+    text = font.render(str(pygame.time.get_ticks() / 1000) + ": "
+        + str(emoji.rect.x) + ","  + str(emoji.rect.y) + " | "
+        + str(emoji.vel[0] * delta) + "," + str(emoji.vel[1] * delta),
+        1, (255, 255, 255))
     screen.blit(text, text.get_rect())
 
     #screen.blit(background, emoji.rect, emoji.rect)
@@ -55,3 +62,6 @@ while 1:
     test.draw(screen)
 
     pygame.display.flip()
+
+def play(scene):
+    return None
