@@ -2,7 +2,7 @@ import pygame
 from setup.timer import Timer
 from setup.vector2 import Vector2
 from setup.util import lerp
-from util.observer import Subject
+from util.observer import Subject, Event
 
 class Emoji(pygame.sprite.Sprite, Subject):
     """ moves       :: []
@@ -41,7 +41,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
         return vel
     
     def startNextMove(self):
-        if self.finishedMoving():
+        if self.isFinished():
             self.vel = (0, 0)
         else:
             self.startPos = Vector2(self.rect.x, self.rect.y)
@@ -56,11 +56,10 @@ class Emoji(pygame.sprite.Sprite, Subject):
     # called once per frame
     def update(self):
         if not self.begun:
-            self.notify(self, 0)
             self.startNextMove()
             self.begun = True
         
-        if not self.finishedMoving():
+        if not self.isFinished():
             # move % dist through dep. on time through timer
             timeThrough = self.timer.timeThrough()
             newPos = lerp(self.startPos, self.getNextMovePos(), timeThrough / self.getCurrentMove()[2])
@@ -77,7 +76,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
             
             #self.addVel((self.vel[0] * delta, self.vel[1] * delta * 100))
 
-        """ if not self.finishedMoving():
+        """ if not self.isFinished():
             #print(self.rect)
             move = self.getCurrentMove()
             # area to test if emoji is in
@@ -90,7 +89,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
                 self.rect.x = move[0]
                 self.rect.y = move[1]
                 self.incMoveIndex()
-                if not self.finishedMoving():
+                if not self.isFinished():
                     print(str(self.moveIndex) + " / " + str(len(self.moves)))
                     self.vel = self.getVelForMove(self.getCurrentMove()) """
 
@@ -104,12 +103,16 @@ class Emoji(pygame.sprite.Sprite, Subject):
     # honestly no idea why it's -2 and not -1
     def incMoveIndex(self):
         if self.moveIndex > len(self.moves) - 2:
-            self.moveIndex = -1
+            self.setFinished()
         else:
             self.moveIndex += 1
 
-    def finishedMoving(self):
+    def isFinished(self):
         return self.moveIndex == -1
+    
+    def setFinished(self):
+        self.moveIndex = -1
+        self.notify(self, Event.EMOJI_FINISHED)
 
     def addVel(self, vel):
         self.rect.x += vel[0]

@@ -11,12 +11,11 @@ if not pygame.mixer: print('Warning, sound disabled')
 from setup.emoji import Emoji
 from setup.scene import Scene
 from setup.scene_text import SceneText
+from util.observer import Observer, Event
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 pygame.display.set_caption('Python Storytelling')
-
-scenes = []
 
 # emoji
 emoji = Emoji()
@@ -33,6 +32,13 @@ e2.addMove(300, 300, 2000)
 scene1.addEmoji(e1)
 scene1.addEmoji(e2)
 
+# scene 2
+scene2 = Scene()
+e3 = Emoji()
+e3.addMove(1000, 300, 100)
+e3.addMove(0, 0, 1000)
+scene2.addEmoji(e3)
+
 # text scene
 sceneT = SceneText("dog dog")
 
@@ -44,54 +50,62 @@ background.fill((0, 0, 0))
 # clock
 clock = pygame.time.Clock()
 
-# time
-font = pygame.font.Font(None, 50)
-text = font.render("Hello World", 1, (255, 255, 255))
-textpos = text.get_rect()
-textpos.centerx = background.get_rect().centerx
-print(textpos)
-
 screen.blit(background, (0, 0))
 
 scene1.setBackground(background)
 sceneT.setBackground(background)
+scene2.setBackground(background)
 
-c = 0
+class Game(Observer):
+    """ scenes :: [Scene]
+        sceneIndex :: Int """
+
+    def __init__(self):
+        self.scenes = []
+        self.sceneIndex = 0
+
+    def play(self):
+        pass
+
+    def loop(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: sys.exit()
+
+        scene = self.getCurrentScene()
+        if scene != None:
+            scene.blit(screen)
+            scene.update()
+            scene.draw(screen)
+        pygame.display.flip()
+    
+    def getCurrentScene(self):
+        return None if self.sceneIndex == -1 else self.scenes[self.sceneIndex]
+
+    def addScene(self, scene):
+        scene.addObserver(self)
+        self.scenes.append(scene)
+
+    def nextScene(self):
+        if self.sceneIndex < len(self.scenes) - 1:
+            self.sceneIndex += 1
+            self.getCurrentScene().start()
+        else:
+            self.sceneIndex = -1
+    
+    def isFinished(self):
+        return self.sceneIndex == -1
+    
+    def onNotify(self, entity, event):
+        scene = self.getCurrentScene()
+        if scene != None and scene == entity:
+            if  event == Event.SCENE_FINISHED:
+                print("scene finished!")
+                self.nextScene()
+
+g = Game()
+g.addScene(scene1)
+g.addScene(sceneT)
+g.addScene(scene2)
+
 while 1:
-    c += 1
-    
-    delta = 1 / clock.tick(60)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
-
-    screen.blit(background, text.get_rect(), text.get_rect())
-    sceneT.blit(screen)
-    #screen.blit(background, emoji.rect, emoji.rect)
-    scene1.blit(screen)
-    
-
-    #emoji.update(delta)
-    scene1.update()
-
-    """ text = font.render(str(pygame.time.get_ticks() / 1000) + ": "
-        + str(emoji.rect.x) + ","  + str(emoji.rect.y) + " | "
-        + str(emoji.vel[0] * delta) + "," + str(emoji.vel[1] * delta),
-        1, (255, 255, 255))
-    screen.blit(text, text.get_rect()) """
-
-    sceneT.draw(screen)
-    #screen.blit(background, emoji.rect, emoji.rect)
-    #screen.blit(background, scene1.emojis)
-    #scene1.blit(screen)
-    
-    #test.draw(screen)
-    scene1.draw(screen)
-
-    pygame.display.flip()
-
-def play(scene):
-    return None
-
-def loop(scene):
-    pass
+    g.loop()

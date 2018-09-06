@@ -1,22 +1,30 @@
 import pygame
-from util.observer import Observer
+from util.observer import Observer, Subject, Event
 
-class Scene(Observer):
-    """     emojis :: sprite.Group
+class Scene(Observer, Subject):
+    """ emojis     :: sprite.Group
         background :: Sprite
-            length :: Int """
+        length     :: Int
+        finished   :: Bool """
 
     def __init__(self, MAX_EMOJIS=25):
+        #Subject.__init__(self)
+        #super(Scene, self).__init__()
+        super().__init__()
         self.MAX_EMOJIS = MAX_EMOJIS
         self.emojis = pygame.sprite.Group()
         self.background = None
+        self.finished = False
+
+    def start(self):
+        pass
     
     def loop(self):
         return None
 
     def setBackground(self, bg):
         self.background = bg
-        
+    
     def addEmoji(self, e):
         e.addObserver(self)
         self.emojis.add(e)
@@ -36,13 +44,21 @@ class Scene(Observer):
             screen.blit(self.background, e.rect, e.rect)
     
     def isFinished(self):
-        flag = True
-        for e in self.emojis:
-            if not e.isFinished:
-                flag = False
-                break
-        return flag
+        return self.finished
     
     def onNotify(self, entity, event):
-        if event == 0:
-            print("event!")
+        # when one emoji is finished
+        if event == Event.EMOJI_FINISHED:
+            self.checkIfFinished()
+    
+    # checks all emojis to see if finished
+    # sets finished to true if so
+    # and notifies game
+    def checkIfFinished(self):
+        for e in self.emojis:
+            if not e.isFinished():
+                self.finished = False
+                break
+            self.finished = True
+            self.notify(self, Event.SCENE_FINISHED)
+        

@@ -3,11 +3,13 @@
 from enum import Enum
 
 class Event(Enum):
-    FINISHED_MOVING = 1
+    EMOJI_FINISHED = 0
+    SCENE_FINISHED = 1
+    TIMER_FINISHED = 2
 
 class Observer:
     def __init__(self):
-        pass
+        super().__init__()
     
     # entity = who sent notification
     # event = data
@@ -19,6 +21,7 @@ class Subject:
 
     def __init__(self):
         self.observers = []
+        super().__init__()
     
     # entity = who sent notification
     # event = data
