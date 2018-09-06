@@ -18,3 +18,6 @@ class Timer():
     def isFinished(self):
         return (self.startTime != -1
             and pygame.time.get_ticks() > self.getEndTime())
+    
+    def timeThrough(self):
+        return pygame.time.get_ticks() - self.startTime

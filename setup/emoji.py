@@ -13,22 +13,21 @@ class Emoji(pygame.sprite.Sprite):
         self.MAX_MOVES = 25
         self.moves = []
         self.moveIndex = 0
+        self.begun = False
         self.vel = (0, 0)      
         self.timer = None  
 
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("test.png")
+        self.image = pygame.image.load("assets/test.png")
         self.rect = self.image.get_rect()
         #screen = pygame.display.get_surface()
 
-        self.addMove(0, 500, 1000)
-        #self.addMove(100, 100, 100)
-        #self.addMove(100, 200, 150)
-        #self.addMove(-100, 200, 200)
-        #self.addMove(50, 50, 100)
-        #self.addMove(300, 400, 50)
-
-        self.startNextMove()
+        """ self.addMove(0, 500, 1000)
+        self.addMove(100, 100, 1000)
+        self.addMove(100, 200, 1500)
+        self.addMove(-100, 200, 2000)
+        self.addMove(50, 50, 1000)
+        self.addMove(300, 400, 500) """
 
     def getCurrentMove(self):
         return self.moves[self.moveIndex]
@@ -43,15 +42,29 @@ class Emoji(pygame.sprite.Sprite):
         if self.finishedMoving():
             self.vel = (0, 0)
         else:
+            self.startPos = Vector2(self.rect.x, self.rect.y)
             self.vel = self.getVelForMove(self.getCurrentMove())
             self.timer = Timer(self.getCurrentMove()[2])
             self.timer.start()
+
+    def getNextMovePos(self):
+        move = self.getCurrentMove()
+        return Vector2(move[0], move[1])
         
     # called once per frame
-    def update(self, delta):
-        lerp(Vector2(3, 4), Vector2(7, 15), 0)
-
+    def update(self):
+        if not self.begun:
+            self.startNextMove()
+            self.begun = True
+        
         if not self.finishedMoving():
+            # move % dist through dep. on time through timer
+            timeThrough = self.timer.timeThrough()
+            newPos = lerp(self.startPos, self.getNextMovePos(), timeThrough / self.getCurrentMove()[2])
+            print(newPos)
+            self.rect.x = newPos.x
+            self.rect.y = newPos.y
+
             if self.timer.isFinished():
                 self.rect.x = self.getCurrentMove()[0]
                 self.rect.y = self.getCurrentMove()[1]
@@ -59,7 +72,7 @@ class Emoji(pygame.sprite.Sprite):
                 self.incMoveIndex()
                 self.startNextMove()
             
-            self.addVel((self.vel[0] * delta, self.vel[1] * delta * 100))
+            #self.addVel((self.vel[0] * delta, self.vel[1] * delta * 100))
 
         """ if not self.finishedMoving():
             #print(self.rect)
@@ -85,9 +98,9 @@ class Emoji(pygame.sprite.Sprite):
                 
 
             
-
+    # honestly no idea why it's -2 and not -1
     def incMoveIndex(self):
-        if self.moveIndex > len(self.moves) - 1:
+        if self.moveIndex > len(self.moves) - 2:
             self.moveIndex = -1
         else:
             self.moveIndex += 1
