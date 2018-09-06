@@ -2,8 +2,9 @@ import pygame
 from setup.timer import Timer
 from setup.vector2 import Vector2
 from setup.util import lerp
+from util.observer import Subject
 
-class Emoji(pygame.sprite.Sprite):
+class Emoji(pygame.sprite.Sprite, Subject):
     """ moves       :: []
         moveIndex   :: Int
         vel         :: (velX, velY)
@@ -18,6 +19,7 @@ class Emoji(pygame.sprite.Sprite):
         self.timer = None  
 
         pygame.sprite.Sprite.__init__(self)
+        Subject.__init__(self)
         self.image = pygame.image.load("assets/test.png")
         self.rect = self.image.get_rect()
         #screen = pygame.display.get_surface()
@@ -54,6 +56,7 @@ class Emoji(pygame.sprite.Sprite):
     # called once per frame
     def update(self):
         if not self.begun:
+            self.notify(self, 0)
             self.startNextMove()
             self.begun = True
         
@@ -61,7 +64,7 @@ class Emoji(pygame.sprite.Sprite):
             # move % dist through dep. on time through timer
             timeThrough = self.timer.timeThrough()
             newPos = lerp(self.startPos, self.getNextMovePos(), timeThrough / self.getCurrentMove()[2])
-            print(newPos)
+            #print(newPos)
             self.rect.x = newPos.x
             self.rect.y = newPos.y
 

@@ -16,6 +16,8 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 pygame.display.set_caption('Python Storytelling')
 
+scenes = []
+
 # emoji
 emoji = Emoji()
 test = pygame.sprite.RenderPlain(emoji)
@@ -90,3 +92,6 @@ while 1:
 
 def play(scene):
     return None
+
+def loop(scene):
+    pass
