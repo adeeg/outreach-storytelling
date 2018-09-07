@@ -1,4 +1,5 @@
-import pygame
+import pygame, os
+from util.pygame_helper import loadImg
 from util.timer import Timer
 from util.vector2 import Vector2
 from util.math import lerp
@@ -7,22 +8,28 @@ from util.observer import Subject, Event
 # sprite which you can add movements to
 # which happen when sprite is started
 class Emoji(pygame.sprite.Sprite, Subject):
+    IMG_PREFIX = "emoji"
+
     """ moves       :: []
         moveIndex   :: Int
         startPos    :: Vector2
         timer       :: Timer
     """
 
-    def __init__(self, MAX_MOVES=25):
+    def __init__(self, image="", x=0, y=0, MAX_MOVES=25):
         self.MAX_MOVES = 25
+        
         self.moves = []
         self.moveIndex = 0
-        self.timer = None  
+        self.timer = None
 
         pygame.sprite.Sprite.__init__(self)
         Subject.__init__(self)
-        self.image = pygame.image.load("assets/test.png")
-        self.rect = self.image.get_rect()
+        super().__init__()
+
+        self.image, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
+        self.rect.x = x
+        self.rect.y = y
     
     def start(self):
         self.startNextMove()
@@ -84,5 +91,6 @@ class Emoji(pygame.sprite.Sprite, Subject):
         self.moveIndex = -1
         self.notify(self, Event.EMOJI_FINISHED)
     
+    # stay in place for a while
     def wait(self, ms):
-        return None
+        self.addMove(self.rect.x, self.rect.y, ms)

@@ -3,14 +3,16 @@
 # https://www.pygame.org/docs/tut/MakeGames.html
 
 # TODO:
-# emoji starting pos
-# different emoji
-# waiting
-# different backgrounds (img? colour?)
-# timer in corner
+# |x| emoji starting pos
+# |x| different emoji
+# | | waiting
+# |x| different backgrounds (img? colour?)
+# | | timer in corner/time limit
 # -----------------------
 # music/sounds
 # effects
+# shake, blur
+# things like scale
 # -----------------------
 # limits (e.g. max emoji)
 # error messages
@@ -40,10 +42,10 @@ test = pygame.sprite.RenderPlain(emoji)
 
 # scene
 scene1 = SceneAction()
-e1 = Emoji()
+e1 = Emoji('laughing', 300, 300)
 e1.addMove(100, 0, 1000)
 e1.addMove(300, 300, 2000)
-e2 = Emoji()
+e2 = Emoji('angry', 0, 0)
 e2.addMove(0, 100, 1000)
 e2.addMove(300, 300, 2000)
 scene1.addEmoji(e1)
@@ -52,33 +54,39 @@ scene1.addEmoji(e2)
 # scene 2
 scene2 = SceneAction()
 e3 = Emoji()
-e3.addMove(1000, 300, 100)
+e3.addMove(500, 300, 1000)
 e3.addMove(0, 0, 1000)
 scene2.addEmoji(e3)
 
 # text scene
-sceneT = SceneText("dog dog")
+sceneT = SceneText("dog dog", 3000)
+
+# scene 3
+scene3 = SceneAction()
+e4 = Emoji('laughing', 300, 300)
+e4.addMove(0, 0, 1000)
+e4.addMove(600, 600, 2000)
+scene3.addEmoji(e4)
 
 # bg
-background = pygame.Surface(screen.get_size())
+""" background = pygame.Surface(screen.get_size())
 background = background.convert()
-background.fill((0, 0, 0))
+background.fill((255, 0, 0)) """
 
 # clock
 clock = pygame.time.Clock()
 
-screen.blit(background, (0, 0))
-
-scene1.background = background
-sceneT.background = background
-scene2.background = background
+#scene1.setBackgroundColour((255, 0, 0))
+scene1.setBackgroundImage('example')
+sceneT.setBackgroundColour((0, 255, 0))
+scene2.setBackgroundColour((0, 0, 255))
+scene3.setBackgroundColour((0, 0, 0))
 
 class Game(Observer):
     """ begun      :: Bool
         scenes     :: [Scene]
         sceneIndex :: Int
     """
-
     def __init__(self):
         self.begun = False
         self.scenes = []
@@ -86,7 +94,7 @@ class Game(Observer):
 
     def start(self):
         if not self.begun:
-            self.getCurrentScene().start()
+            self.getCurrentScene().start(screen)
             self.begun = True
 
     def loop(self):
@@ -111,7 +119,7 @@ class Game(Observer):
     def nextScene(self):
         if self.sceneIndex < len(self.scenes) - 1:
             self.sceneIndex += 1
-            self.getCurrentScene().start()
+            self.getCurrentScene().start(screen)
         else:
             self.sceneIndex = -1
     
@@ -129,6 +137,7 @@ g = Game()
 g.addScene(scene1)
 g.addScene(sceneT)
 g.addScene(scene2)
+g.addScene(scene3)
 
 g.start()
 while not g.isFinished():

@@ -9,15 +9,16 @@ class SceneText(Scene):
         textSurface :: ?
     """
 
-    def __init__(self, text):
+    def __init__(self, text, ms=1000):
         super().__init__()
         self.text = text
         self.font = pygame.font.Font(None, 50)
         self.textSurface = self.font.render(self.text,
             1, (255, 255, 255))
-        self.timer = Timer(1000)
+        self.timer = Timer(ms)
 
-    def start(self):
+    def start(self, screen):
+        super().start(screen)
         self.timer.start()
     
     def update(self):

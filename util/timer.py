@@ -23,3 +23,6 @@ class Timer():
     
     def timeThrough(self):
         return pygame.time.get_ticks() - self.startTime
+    
+    def timeLeft(self):
+        return self.startTime - pygame.time.get_ticks()

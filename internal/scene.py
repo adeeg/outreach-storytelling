@@ -1,18 +1,21 @@
-import pygame
+import pygame, os
 from util.observer import Observer, Subject, Event
+from util.pygame_helper import loadImg
 
 class Scene(Observer, Subject):
-    """ background :: Sprite
-        finished   :: Bool
+    """ finished      :: Bool
+        background    :: Sprite
     """
     
     def __init__(self):
         super().__init__()
-        self.background = None
         self.finished = False
+        self.background = None
 
-    def start(self):
-        pass
+    def start(self, screen):
+        screen.blit(self.background, (0, 0))
+        pygame.display.flip()
+        pygame.display.update()
     
     def update(self):
         pass
@@ -25,3 +28,12 @@ class Scene(Observer, Subject):
     
     def isFinished(self):
         return self.finished
+    
+    def setBackgroundColour(self, colour):
+        background = pygame.Surface((800, 600))
+        self.background = background.convert()
+        self.background.fill(colour)
+    
+    def setBackgroundImage(self, imgName):
+        img, rect = loadImg(os.path.join('background', imgName))
+        self.background = img.convert()

@@ -1,6 +1,8 @@
 import pygame
+from functools import reduce
 from internal.scene import Scene
 from util.observer import Event
+from util.timer import Timer
 
 # scene which displays moving emojis
 class SceneAction(Scene):
@@ -11,7 +13,8 @@ class SceneAction(Scene):
         super().__init__()
         self.emojis = pygame.sprite.Group()
 
-    def start(self):
+    def start(self, screen):
+        super().start(screen)
         for e in self.emojis:
             e.start()
     
@@ -38,9 +41,10 @@ class SceneAction(Scene):
     # sets finished to true if so
     # and notifies game
     def checkIfFinished(self):
-        for e in self.emojis:
-            if not e.isFinished():
-                self.finished = False
-                break
+        flag = reduce(lambda x,y: x and y.isFinished(), self.emojis, True)
+        if flag:
             self.finished = True
             self.notify(self, Event.SCENE_FINISHED)
+            # TODO: probably a better way of doing this
+            for e in self.emojis:
+                e.kill()            
