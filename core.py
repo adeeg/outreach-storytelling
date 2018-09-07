@@ -1,6 +1,10 @@
 # thanks to:
 # https://www.pygame.org/docs/tut/ChimpLineByLine.html
 # https://www.pygame.org/docs/tut/MakeGames.html
+
+# TODO:
+# limits (e.g. max emoji)
+# error messages
 import os, sys
 import pygame
 from pygame.locals import *
@@ -8,9 +12,10 @@ from pygame.locals import *
 if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
-from setup.emoji import Emoji
-from setup.scene import Scene
-from setup.scene_text import SceneText
+from internal.emoji import Emoji
+from internal.scene import Scene
+from internal.scene_action import SceneAction
+from internal.scene_text import SceneText
 from util.observer import Observer, Event
 
 pygame.init()
@@ -22,7 +27,7 @@ emoji = Emoji()
 test = pygame.sprite.RenderPlain(emoji)
 
 # scene
-scene1 = Scene()
+scene1 = SceneAction()
 e1 = Emoji()
 e1.addMove(100, 0, 1000)
 e1.addMove(300, 300, 2000)
@@ -33,7 +38,7 @@ scene1.addEmoji(e1)
 scene1.addEmoji(e2)
 
 # scene 2
-scene2 = Scene()
+scene2 = SceneAction()
 e3 = Emoji()
 e3.addMove(1000, 300, 100)
 e3.addMove(0, 0, 1000)
@@ -52,9 +57,9 @@ clock = pygame.time.Clock()
 
 screen.blit(background, (0, 0))
 
-scene1.setBackground(background)
-sceneT.setBackground(background)
-scene2.setBackground(background)
+scene1.background = background
+sceneT.background = background
+scene2.background = background
 
 class Game(Observer):
     """ scenes :: [Scene]

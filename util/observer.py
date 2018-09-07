@@ -12,7 +12,6 @@ class Observer:
         super().__init__()
     
     # entity = who sent notification
-    # event = data
     def onNotify(self, entity, event):
         pass
 
@@ -20,11 +19,10 @@ class Subject:
     """ observers :: [] """
 
     def __init__(self):
-        self.observers = []
         super().__init__()
+        self.observers = []
     
     # entity = who sent notification
-    # event = data
     def notify(self, entity, event):
         for o in self.observers:
             o.onNotify(entity, event)
