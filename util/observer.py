@@ -16,7 +16,8 @@ class Observer:
         pass
 
 class Subject:
-    """ observers :: [] """
+    """ observers :: []
+    """
 
     def __init__(self):
         super().__init__()

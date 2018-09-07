@@ -3,8 +3,20 @@
 # https://www.pygame.org/docs/tut/MakeGames.html
 
 # TODO:
+# emoji starting pos
+# different emoji
+# waiting
+# different backgrounds (img? colour?)
+# timer in corner
+# -----------------------
+# music/sounds
+# effects
+# -----------------------
 # limits (e.g. max emoji)
 # error messages
+# clean up core
+# proper game loop
+# velocity instead of linear interp.?
 import os, sys
 import pygame
 from pygame.locals import *
@@ -62,26 +74,32 @@ sceneT.background = background
 scene2.background = background
 
 class Game(Observer):
-    """ scenes :: [Scene]
-        sceneIndex :: Int """
+    """ begun      :: Bool
+        scenes     :: [Scene]
+        sceneIndex :: Int
+    """
 
     def __init__(self):
+        self.begun = False
         self.scenes = []
         self.sceneIndex = 0
 
-    def play(self):
-        pass
+    def start(self):
+        if not self.begun:
+            self.getCurrentScene().start()
+            self.begun = True
 
     def loop(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT: sys.exit()
+        if self.begun:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit()
 
-        scene = self.getCurrentScene()
-        if scene != None:
-            scene.blit(screen)
-            scene.update()
-            scene.draw(screen)
-        pygame.display.flip()
+            scene = self.getCurrentScene()
+            if scene != None:
+                scene.blit(screen)
+                scene.update()
+                scene.draw(screen)
+            pygame.display.flip()
     
     def getCurrentScene(self):
         return None if self.sceneIndex == -1 else self.scenes[self.sceneIndex]
@@ -112,5 +130,6 @@ g.addScene(scene1)
 g.addScene(sceneT)
 g.addScene(scene2)
 
-while 1:
+g.start()
+while not g.isFinished():
     g.loop()
