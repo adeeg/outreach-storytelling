@@ -26,6 +26,9 @@ class Scene(Observer, Subject):
     def blit(self, screen):
         pass
     
+    def end(self, screen):
+        pass
+    
     def isFinished(self):
         return self.finished
     

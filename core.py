@@ -118,6 +118,7 @@ class Game(Observer):
 
     def nextScene(self):
         if self.sceneIndex < len(self.scenes) - 1:
+            self.getCurrentScene().end(screen)
             self.sceneIndex += 1
             self.getCurrentScene().start(screen)
         else:
@@ -134,7 +135,7 @@ class Game(Observer):
                 self.nextScene()
 
 g = Game()
-g.addScene(scene1)
+#g.addScene(scene1)
 g.addScene(sceneT)
 g.addScene(scene2)
 g.addScene(scene3)
