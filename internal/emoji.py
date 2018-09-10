@@ -36,6 +36,10 @@ class Emoji(pygame.sprite.Sprite, Subject):
         
     # called once per frame
     def update(self):
+        move = self.getCurrentMove()
+        if len(self.moves) == 0:
+            self.setFinished()
+
         if not self.isFinished():
             # move % dist through dep. on time through timer
             timeThrough = self.timer.timeThrough()
@@ -51,7 +55,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
                 self.startNextMove()
 
     def getCurrentMove(self):
-        return self.moves[self.moveIndex]
+        return self.moves[self.moveIndex] if len(self.moves) != 0 else None
 
     def getCurMovePos(self):
         move = self.getCurrentMove()
@@ -62,14 +66,15 @@ class Emoji(pygame.sprite.Sprite, Subject):
         return move[2]
     
     def startNextMove(self):
-        if self.isFinished():
-            finalPos = self.getCurMovePos()
-            self.rect.x = finalPos.x
-            self.rect.y = finalPos.y
-        else:
-            self.startPos = Vector2(self.rect.x, self.rect.y)
-            self.timer = Timer(self.getCurMoveTime())
-            self.timer.start()
+        if len(self.moves) != 0:
+            if self.isFinished():
+                finalPos = self.getCurMovePos()
+                self.rect.x = finalPos.x
+                self.rect.y = finalPos.y
+            else:
+                self.startPos = Vector2(self.rect.x, self.rect.y)
+                self.timer = Timer(self.getCurMoveTime())
+                self.timer.start()
 
     def addMove(self, x, y, time):
         if len(self.moves) < self.MAX_MOVES:

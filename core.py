@@ -2,23 +2,6 @@
 # https://www.pygame.org/docs/tut/ChimpLineByLine.html
 # https://www.pygame.org/docs/tut/MakeGames.html
 
-# TODO:
-# |x| emoji starting pos
-# |x| different emoji
-# | | waiting
-# |x| different backgrounds (img? colour?)
-# | | timer in corner/time limit
-# -----------------------
-# music/sounds
-# effects
-# shake, blur
-# things like scale
-# -----------------------
-# limits (e.g. max emoji)
-# error messages
-# clean up core
-# proper game loop
-# velocity instead of linear interp.?
 import os, sys
 import pygame
 from pygame.locals import *
@@ -135,7 +118,7 @@ class Game(Observer):
                 self.nextScene()
 
 g = Game()
-#g.addScene(scene1)
+g.addScene(scene1)
 g.addScene(sceneT)
 g.addScene(scene2)
 g.addScene(scene3)

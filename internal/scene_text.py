@@ -13,6 +13,7 @@ class SceneText(Scene):
         super().__init__()
         self.text = text
         self.font = pygame.font.Font(None, 100)
+
         self.textSurface = self.font.render(self.text,
             1, (255, 255, 255))
         self.timer = Timer(ms)
