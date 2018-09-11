@@ -14,18 +14,21 @@ class Action(Subject):
     def start(self):
         self.timer.start()
     
+    def update(self):
+        pass
+    
     def end(self):
         self.notify(self, Event.ACTION_FINISHED)
 
 class ActionWait(Action):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, duration):
+        super().__init__(duration)
 
 class ActionMove(Action):
     """ emoji :: emoji
         coord :: (Num, Num)
     """
-    def __init__(self, emoji, coord):
+    def __init__(self, duration, emoji, coord):
         super().__init__()
         self.emoji = emoji
         self.coord = coord

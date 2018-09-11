@@ -42,17 +42,18 @@ class Emoji(pygame.sprite.Sprite, Subject):
 
         if not self.isFinished():
             # move % dist through dep. on time through timer
-            timeThrough = self.timer.timeThrough()
-            newPos = lerp(self.startPos, self.getCurMovePos(), timeThrough / self.getCurrentMove()[2])
-            self.rect.x = newPos.x
-            self.rect.y = newPos.y
+            if not self.timer.isFinished():
+                timeThrough = self.timer.timeThrough()
+                newPos = lerp(self.startPos, self.getCurMovePos(), timeThrough / self.getCurrentMove()[2])
+                self.rect.x = newPos.x
+                self.rect.y = newPos.y
 
-            if self.timer.isFinished():
-                self.rect.x = self.getCurrentMove()[0]
-                self.rect.y = self.getCurrentMove()[1]
-                # move onto the next move
-                self.incMoveIndex()
-                self.startNextMove()
+                if self.timer.isFinished():
+                    self.rect.x = self.getCurrentMove()[0]
+                    self.rect.y = self.getCurrentMove()[1]
+                    # move onto the next move
+                    #self.incMoveIndex()
+                    #self.startNextMove()
 
     def getCurrentMove(self):
         return self.moves[self.moveIndex] if len(self.moves) != 0 else None

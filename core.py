@@ -13,6 +13,8 @@ from internal.emoji import Emoji
 from internal.scene import Scene
 from internal.scene_action import SceneAction
 from internal.scene_text import SceneText
+from internal.scene_test import SceneTest
+from internal.action import ActionMove, ActionText, ActionWait
 from util.observer import Observer, Event
 
 pygame.init()
@@ -118,10 +120,16 @@ class Game(Observer):
                 self.nextScene()
 
 g = Game()
-g.addScene(scene1)
+#g.addScene(scene1)
+#g.addScene(sceneT)
+#g.addScene(scene2)
+#g.addScene(scene3)
+
+sceneT = SceneTest()
+sceneT.setBackgroundColour((255, 255, 255))
+a = ActionWait(1000)
+sceneT.addAction(a)
 g.addScene(sceneT)
-g.addScene(scene2)
-g.addScene(scene3)
 
 g.start()
 while not g.isFinished():

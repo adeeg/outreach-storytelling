@@ -8,7 +8,6 @@ class Scene(Observer, Subject):
         actions       :: [Action]
         actionIndex   :: Num
     """
-    
     def __init__(self):
         super().__init__()
         self.finished = False
@@ -32,23 +31,6 @@ class Scene(Observer, Subject):
     
     def end(self, screen):
         pass
-    
-    def getCurAction(self):
-        return self.actions[self.actionIndex]
-    
-    def nextAction(self):
-        self.actionIndex += 1
-    
-    def addAction(self, act):
-        self.actions.append(act)
-    
-    def addActionConc(self, act):
-        act.conc = True
-        self.actions.append(act)
-    
-    def onNotify(self, entity, event):
-        if event == Event.ACTION_FINISHED:
-            self.nextAction()
     
     def isFinished(self):
         return self.finished
