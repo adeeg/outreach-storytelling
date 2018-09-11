@@ -6,6 +6,7 @@ class Event(Enum):
     EMOJI_FINISHED = 0
     SCENE_FINISHED = 1
     TIMER_FINISHED = 2
+    ACTION_FINISHED = 3
 
 class Observer:
     def __init__(self):
