@@ -5,6 +5,7 @@ from util.observer import Event
 class SceneTest(Scene):
     def __init__(self):
         super().__init__()
+        self.emojis = []
     
     def update(self):
         act = self.getCurAction()
@@ -28,3 +29,6 @@ class SceneTest(Scene):
     def onNotify(self, entity, event):
         if event == Event.ACTION_FINISHED:
             self.nextAction()
+    
+    def addEmoji(self, *e):
+        self.emojis.append(e)
