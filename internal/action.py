@@ -1,5 +1,6 @@
 from util.observer import Subject, Event
 from util.timer import Timer
+from util.math import lerp
 
 class Action(Subject):
     """ duration :: Num
@@ -35,12 +36,21 @@ class ActionMove(Action):
 
     def start(self):
         super().start()
-        self.emoji.start()
+        #self.emoji.start()
+        self.startPos = self.emoji.getPos()
     
     def update(self):
         super().update()
-        self.emoji.addMove(self.coord[0], self.coord[1], self.duration)
-        self.emoji.update()
+
+        newPos = lerp(self.startPos, self.coord, self.timer.timeThrough() / self.duration)
+        self.emoji.setPos(newPos)
+
+        #self.emoji.addMove(self.coord[0], self.coord[1], self.duration)
+        #self.emoji.update()
+    
+    def end(self):
+        self.emoji.setPos(self.coord)
+        super().end()
 
 class ActionText(Action):
     """ text :: String """

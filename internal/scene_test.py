@@ -34,6 +34,8 @@ class SceneTest(Scene):
             self.getCurAction().start()
         else:
             self.actionIndex = -1
+            self.isFinished = True
+            self.notify(self, Event.SCENE_FINISHED)
     
     def addAction(self, act):
         act.addObserver(self)

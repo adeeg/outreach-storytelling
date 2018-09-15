@@ -10,12 +10,14 @@ if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
 from internal.emoji import Emoji
+from internal.emoji_test import EmojiTest
 from internal.scene import Scene
 from internal.scene_action import SceneAction
 from internal.scene_text import SceneText
 from internal.scene_test import SceneTest
 from internal.action import ActionMove, ActionText, ActionWait
 from util.observer import Observer, Event
+from util.vector2 import Vector2
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
@@ -128,14 +130,14 @@ g = Game()
 sceneT = SceneTest()
 sceneT.setBackgroundColour((255, 255, 255))
 
-eT1 = Emoji('laughing')
+#eT1 = Emoji('laughing')
+eT1 = EmojiTest('laughing')
 sceneT.addEmoji(eT1)
 
-a = ActionWait(1000)
-sceneT.addAction(a)
-
-b = ActionMove(1000, eT1, (500, 500))
-sceneT.addAction(b)
+sceneT.addAction(ActionWait(1000))
+sceneT.addAction(ActionMove(1000, eT1, Vector2(200, 200)))
+sceneT.addAction(ActionWait(250))
+sceneT.addAction(ActionMove(1500, eT1, Vector2(200, 450)))
 
 g.addScene(sceneT)
 
