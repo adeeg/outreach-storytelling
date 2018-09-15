@@ -36,7 +36,6 @@ class ActionMove(Action):
 
     def start(self):
         super().start()
-        #self.emoji.start()
         self.startPos = self.emoji.getPos()
     
     def update(self):
@@ -44,9 +43,6 @@ class ActionMove(Action):
 
         newPos = lerp(self.startPos, self.coord, self.timer.timeThrough() / self.duration)
         self.emoji.setPos(newPos)
-
-        #self.emoji.addMove(self.coord[0], self.coord[1], self.duration)
-        #self.emoji.update()
     
     def end(self):
         self.emoji.setPos(self.coord)
@@ -57,3 +53,14 @@ class ActionText(Action):
     def __init__(self, text):
         super().__init__()
         self.text = text
+    
+    def start(self):
+        self.textSurface = self.font.render(self.text,
+            1, (255, 255, 255))
+        super().start()
+    
+    def update(self):
+        super().update()
+    
+    def end(self):
+        super().end()

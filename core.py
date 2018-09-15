@@ -11,6 +11,7 @@ if not pygame.mixer: print('Warning, sound disabled')
 
 from internal.emoji import Emoji
 from internal.emoji_test import EmojiTest
+from internal.text import Text
 from internal.scene import Scene
 from internal.scene_action import SceneAction
 from internal.scene_text import SceneText
@@ -138,6 +139,8 @@ sceneT.addAction(ActionWait(1000))
 sceneT.addAction(ActionMove(1000, eT1, Vector2(200, 200)))
 sceneT.addAction(ActionWait(250))
 sceneT.addAction(ActionMove(1500, eT1, Vector2(200, 450)))
+
+sceneT.addDrawable(Text('dog'))
 
 g.addScene(sceneT)
 

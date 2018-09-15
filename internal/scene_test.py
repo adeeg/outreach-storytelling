@@ -6,6 +6,7 @@ class SceneTest(Scene):
     def __init__(self):
         super().__init__()
         self.emojis = pygame.sprite.Group()
+        self.drawables = []
     
     def start(self, screen):
         super().start(screen)
@@ -20,10 +21,14 @@ class SceneTest(Scene):
     
     def draw(self, screen):
         self.emojis.draw(screen)
+        for d in self.drawables:
+            d.draw(screen)
     
     def blit(self, screen):
         for e in self.emojis:
             screen.blit(self.background, e.rect, e.rect)
+        for d in self.drawables:
+            d.blit(screen)
     
     def getCurAction(self):
         return self.actions[self.actionIndex] if self.actionIndex > -1 and self.actionIndex < len(self.actions) else None
@@ -51,7 +56,10 @@ class SceneTest(Scene):
         if event == Event.EMOJI_FINISHED:
             print("emoj finish")
     
-    def addEmoji(self, *e):
-        for emoj in e:
-            emoj.addObserver(self)
-        self.emojis.add(e)
+    def addEmoji(self, *emoji):
+        for e in emoji:
+            e.addObserver(self)
+        self.emojis.add(emoji)
+    
+    def addDrawable(self, *draw):
+        self.drawables.extend(draw)
