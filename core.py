@@ -127,8 +127,16 @@ g = Game()
 
 sceneT = SceneTest()
 sceneT.setBackgroundColour((255, 255, 255))
+
+eT1 = Emoji('laughing')
+sceneT.addEmoji(eT1)
+
 a = ActionWait(1000)
 sceneT.addAction(a)
+
+b = ActionMove(1000, eT1, (500, 500))
+sceneT.addAction(b)
+
 g.addScene(sceneT)
 
 g.start()

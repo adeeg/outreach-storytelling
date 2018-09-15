@@ -76,7 +76,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
                 self.startPos = Vector2(self.rect.x, self.rect.y)
                 self.timer = Timer(self.getCurMoveTime())
                 self.timer.start()
-
+    
     def addMove(self, x, y, time):
         if len(self.moves) < self.MAX_MOVES:
             self.moves.append((x, y, time))

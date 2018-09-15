@@ -5,7 +5,6 @@ class Timer():
     """ duration :: Int
         startTime :: Int
     """
-
     # duration is in ms
     def __init__(self, duration):
         self.duration = duration
