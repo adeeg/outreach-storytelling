@@ -12,12 +12,12 @@ class SceneTest(Scene):
         super().start(screen)
         act = self.getCurAction()
         if act != None:
-            act.start()
+            act.start(self)
     
     def update(self):
         act = self.getCurAction()
         if act != None:
-            act.update()
+            act.update(self)
     
     def draw(self, screen):
         self.emojis.draw(screen)
@@ -36,19 +36,20 @@ class SceneTest(Scene):
     def nextAction(self):
         if self.actionIndex + 1 < len(self.actions):
             self.actionIndex += 1
-            self.getCurAction().start()
+            self.getCurAction().start(self)
         else:
             self.actionIndex = -1
             self.isFinished = True
             self.notify(self, Event.SCENE_FINISHED)
     
     def addAction(self, act):
+        act.scene = self
         act.addObserver(self)
         self.actions.append(act)
     
     def addActionConc(self, act):
         act.conc = True
-        self.actions.append(act)
+        self.addAction(act)
     
     def onNotify(self, entity, event):
         if event == Event.ACTION_FINISHED:
