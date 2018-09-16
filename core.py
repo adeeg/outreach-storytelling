@@ -16,7 +16,7 @@ from internal.scene import Scene
 from internal.scene_action import SceneAction
 from internal.scene_text import SceneText
 from internal.scene_test import SceneTest
-from internal.action import ActionMove, ActionText, ActionWait
+from internal.action import ActionMove, ActionText, ActionWait, ActionScale, ActionRotate
 from util.observer import Observer, Event
 from util.vector2 import Vector2
 
@@ -135,10 +135,12 @@ sceneT.setBackgroundColour((255, 255, 255))
 eT1 = EmojiTest('laughing')
 sceneT.addEmoji(eT1)
 
+#sceneT.addAction(ActionScale(1000, eT1, 2))
 sceneT.addAction(ActionWait(1000))
+sceneT.addAction(ActionRotate(1000, eT1, 90))
 sceneT.addAction(ActionMove(1000, eT1, Vector2(200, 200)))
 sceneT.addAction(ActionText(1000, 'dog'))
-sceneT.addAction(ActionMove(1500, eT1, Vector2(200, 450)))
+sceneT.addAction(ActionMove(1500, eT1, Vector2(200, 300)))
 
 #sceneT.addDrawable(Text('dog'))
 

@@ -1,3 +1,6 @@
+def fromTuple(tupl):
+    return Vector2(tupl[0], tupl[1])
+
 class Vector2():
     """ x :: Num
         y :: Num
@@ -17,3 +20,9 @@ class Vector2():
     
     def mult(self, scal):
         return Vector2(self.x * scal, self.y * scal)
+    
+    def toTuple(self):
+        return (self.x, self.y)
+
+    def operation(self, op):
+        return Vector2(op(self.x), op(self.y))

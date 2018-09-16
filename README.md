@@ -3,7 +3,7 @@
 ## TODO:
 * [x] emoji starting pos
 * [x] different emoji
-* [ ] waiting
+* [x] waiting
 * [x] different backgrounds (img? colour?)
 * [ ] timer in corner/time limit
 * [ ] newline text, proper centering
@@ -13,6 +13,7 @@
 * [ ] effects
 * [ ] shake, blur
 * [ ] things like scale
+* [ ] 'concurrent' actions
 
 
 * [ ] layer between frontend -> backend
