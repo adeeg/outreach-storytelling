@@ -18,17 +18,28 @@ class SceneTest(Scene):
         act = self.getCurAction()
         if act != None:
             act.update(self)
+
+    def getTextCenter(self, text):
+        textSize = self.font.size(text)
+        return ((640 - textSize[0])/2, (480 - textSize[1])/2)
     
     def draw(self, screen):
-        self.emojis.draw(screen)
+        #super().draw(screen)
+        for e in self.emojis:
+            if e.visible:
+                screen.blit(e.image, e.rect)
+        #self.emojis.draw(screen)
         for d in self.drawables:
             d.draw(screen)
     
     def blit(self, screen):
+        super().blit(screen)
         for e in self.emojis:
-            screen.blit(self.background, e.rect, e.rect)
+            if e.visible:
+                screen.blit(self.background, e.rect, e.rect)
+                pass
         for d in self.drawables:
-            d.blit(screen)
+            d.blit(screen, self.background)
     
     def getCurAction(self):
         return self.actions[self.actionIndex] if self.actionIndex > -1 and self.actionIndex < len(self.actions) else None

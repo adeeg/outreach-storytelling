@@ -27,6 +27,7 @@ class Scene(Observer, Subject):
         pass
     
     def blit(self, screen):
+        screen.blit(self.background, (0, 0))
         pass
     
     def end(self, screen):

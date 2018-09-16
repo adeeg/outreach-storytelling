@@ -11,9 +11,9 @@ class Text(Drawable):
 
     def draw(self, screen):
         self.textSurface = self.font.render(self.text,
-            1, (0, 0, 0))
+            1, (255, 255, 255))
 
-    def blit(self, screen):
+    def blit(self, screen, background):
         screen.blit(self.textSurface, self.getTextCenter(self.text))
     
     def getTextCenter(self, text):

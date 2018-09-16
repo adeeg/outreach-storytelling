@@ -13,6 +13,8 @@ class EmojiTest(pygame.sprite.Sprite, Subject):
         Subject.__init__(self)
         super().__init__()
 
+        self.visible = True
+
         self.image, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
         self.rect.x = startCoord.x
         self.rect.y = startCoord.y

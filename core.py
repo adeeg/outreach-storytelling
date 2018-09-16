@@ -95,7 +95,7 @@ class Game(Observer):
                 scene.blit(screen)
                 scene.update()
                 scene.draw(screen)
-            pygame.display.flip()
+                pygame.display.flip()
     
     def getCurrentScene(self):
         return None if self.sceneIndex == -1 else self.scenes[self.sceneIndex]

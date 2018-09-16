@@ -2,6 +2,7 @@ from util.observer import Subject, Event
 from util.timer import Timer
 from util.math import lerp
 from internal.text import Text
+import pygame
 
 class Action(Subject):
     """ duration :: Num
@@ -56,11 +57,19 @@ class ActionText(Action):
         self.text = Text(text)
     
     def start(self, scene):
+        self.bg = scene.background
+        scene.setBackgroundColour((0, 0, 0))
         scene.addDrawable(self.text)
+        for e in scene.emojis:
+            e.visible = False
         super().start(scene)
     
     def update(self, scene):
         super().update(scene)
     
     def end(self, scene):
+        scene.background = self.bg
+        scene.drawables.remove(self.text)
+        for e in scene.emojis:
+            e.visible = True
         super().end(scene)
