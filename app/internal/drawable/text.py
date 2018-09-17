@@ -1,5 +1,6 @@
 import pygame, os
 from internal.drawable.drawable import Drawable
+from util.config import getConfig
 
 class Text(Drawable):
     def __init__(self, text):
@@ -18,4 +19,5 @@ class Text(Drawable):
     
     def getTextCenter(self, text):
         textSize = self.font.size(text)
-        return ((640 - textSize[0])/2, (480 - textSize[1])/2)
+        screen_size = getConfig('window_size')
+        return ((screen_size[0] - textSize[0])/2, (screen_size[1] - textSize[1])/2)

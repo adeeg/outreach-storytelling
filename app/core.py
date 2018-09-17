@@ -15,9 +15,10 @@ from internal.drawable.emoji import Emoji
 from util.observer import Observer, Event
 from util.timer import Timer
 from util.vector2 import Vector2
+from util.config import getConfig
 
 pygame.init()
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode(tuple(getConfig('window_size')))
 pygame.display.set_caption('Python Storytelling')
 
 class Game(Observer):
@@ -77,13 +78,13 @@ g = Game()
 newScene = SceneAction()
 newScene.setBackgroundColour((255, 255, 255))
 
-newEmoji = Emoji('laughing')
-newScene.addEmoji(newEmoji)
+#newEmoji = Emoji('laughing')
+#newScene.addEmoji(newEmoji)
 
-newScene.addAction(ActionWait(1000))
-newScene.addAction(ActionMove(1000, newEmoji, Vector2(200, 200)))
-newScene.addAction(ActionText(1000, 'dog'))
-newScene.addAction(ActionMove(1500, newEmoji, Vector2(200, 300)))
+#newScene.addAction(ActionWait(1000))
+#newScene.addAction(ActionMove(1000, newEmoji, Vector2(200, 200)))
+#newScene.addAction(ActionText(1000, 'dog'))
+#newScene.addAction(ActionMove(1500, newEmoji, Vector2(200, 300)))
 
 g.addScene(newScene)
 
