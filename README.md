@@ -23,3 +23,4 @@
 * [ ] clean up core
 * [ ] proper game loop
 * [ ] velocity instead of linear interp.?
+* [ ] saving/serialising
