@@ -16,6 +16,7 @@
 * [ ] 'concurrent' actions
 
 
+* [ ] remove old stuff
 * [ ] layer between frontend -> backend
 * [ ] limits (e.g. max emoji)
 * [ ] error messages

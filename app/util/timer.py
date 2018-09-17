@@ -25,3 +25,6 @@ class Timer():
     
     def timeLeft(self):
         return self.startTime - pygame.time.get_ticks()
+    
+    def perctThrough(self):
+        self.timeThrough() / self.duration

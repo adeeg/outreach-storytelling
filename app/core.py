@@ -9,66 +9,16 @@ from pygame.locals import *
 if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
-from internal.emoji import Emoji
-from internal.emoji_test import EmojiTest
-from internal.text import Text
-from internal.scene import Scene
 from internal.scene_action import SceneAction
-from internal.scene_text import SceneText
-from internal.scene_test import SceneTest
-from internal.action import ActionMove, ActionText, ActionWait, ActionScale, ActionRotate
+from internal.action import ActionWait, ActionMove, ActionText
+from internal.drawable.emoji import Emoji
 from util.observer import Observer, Event
+from util.timer import Timer
 from util.vector2 import Vector2
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 pygame.display.set_caption('Python Storytelling')
-
-# emoji
-emoji = Emoji()
-test = pygame.sprite.RenderPlain(emoji)
-
-# scene
-scene1 = SceneAction()
-e1 = Emoji('laughing', 300, 300)
-e1.addMove(100, 0, 1000)
-e1.addMove(300, 300, 2000)
-e2 = Emoji('angry', 0, 0)
-e2.addMove(0, 100, 1000)
-e2.addMove(300, 300, 2000)
-scene1.addEmoji(e1)
-scene1.addEmoji(e2)
-
-# scene 2
-scene2 = SceneAction()
-e3 = Emoji()
-e3.addMove(500, 300, 1000)
-e3.addMove(0, 0, 1000)
-scene2.addEmoji(e3)
-
-# text scene
-sceneT = SceneText("dog dog", 3000)
-
-# scene 3
-scene3 = SceneAction()
-e4 = Emoji('laughing', 300, 300)
-e4.addMove(0, 0, 1000)
-e4.addMove(600, 600, 2000)
-scene3.addEmoji(e4)
-
-# bg
-""" background = pygame.Surface(screen.get_size())
-background = background.convert()
-background.fill((255, 0, 0)) """
-
-# clock
-clock = pygame.time.Clock()
-
-#scene1.setBackgroundColour((255, 0, 0))
-scene1.setBackgroundImage('example')
-sceneT.setBackgroundColour((0, 255, 0))
-scene2.setBackgroundColour((0, 0, 255))
-scene3.setBackgroundColour((0, 0, 0))
 
 class Game(Observer):
     """ begun      :: Bool
@@ -123,28 +73,19 @@ class Game(Observer):
                 self.nextScene()
 
 g = Game()
-#g.addScene(scene1)
-#g.addScene(sceneT)
-#g.addScene(scene2)
-#g.addScene(scene3)
 
-sceneT = SceneTest()
-sceneT.setBackgroundColour((255, 255, 255))
+newScene = SceneAction()
+newScene.setBackgroundColour((255, 255, 255))
 
-#eT1 = Emoji('laughing')
-eT1 = EmojiTest('laughing')
-sceneT.addEmoji(eT1)
+newEmoji = Emoji('laughing')
+newScene.addEmoji(newEmoji)
 
-#sceneT.addAction(ActionScale(1000, eT1, 2))
-sceneT.addAction(ActionWait(1000))
-sceneT.addAction(ActionRotate(1000, eT1, 90))
-sceneT.addAction(ActionMove(1000, eT1, Vector2(200, 200)))
-sceneT.addAction(ActionText(1000, 'dog'))
-sceneT.addAction(ActionMove(1500, eT1, Vector2(200, 300)))
+newScene.addAction(ActionWait(1000))
+newScene.addAction(ActionMove(1000, newEmoji, Vector2(200, 200)))
+newScene.addAction(ActionText(1000, 'dog'))
+newScene.addAction(ActionMove(1500, newEmoji, Vector2(200, 300)))
 
-#sceneT.addDrawable(Text('dog'))
-
-g.addScene(sceneT)
+g.addScene(newScene)
 
 g.start()
 while not g.isFinished():

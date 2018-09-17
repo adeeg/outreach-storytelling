@@ -1,5 +1,5 @@
 import pygame, os
-from internal.drawable import Drawable
+from internal.drawable.drawable import Drawable
 
 class Text(Drawable):
     def __init__(self, text):

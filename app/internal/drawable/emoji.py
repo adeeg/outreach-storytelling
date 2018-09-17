@@ -5,7 +5,7 @@ from util.vector2 import Vector2
 from util.math import lerp
 from util.observer import Subject, Event
 
-class EmojiTest(pygame.sprite.Sprite, Subject):
+class Emoji(pygame.sprite.Sprite, Subject):
     IMG_PREFIX = "emoji"
 
     def __init__(self, image="", startCoord=Vector2(0,0)):
@@ -15,7 +15,7 @@ class EmojiTest(pygame.sprite.Sprite, Subject):
 
         self.visible = True
         self.rotation = 0
-
+        
         self.image, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
         self.rect.x = startCoord.x
         self.rect.y = startCoord.y

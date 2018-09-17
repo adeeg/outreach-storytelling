@@ -2,7 +2,7 @@ import pygame
 from internal.scene import Scene
 from util.observer import Event
 
-class SceneTest(Scene):
+class SceneAction(Scene):
     def __init__(self):
         super().__init__()
         self.emojis = pygame.sprite.Group()
