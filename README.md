@@ -1,5 +1,9 @@
 # outreach-storytelling
 
+## Install
+`pip install pygame`
+`python3 app/core.py`
+
 ## TODO:
 * [x] emoji starting pos
 * [x] different emoji
@@ -24,3 +28,4 @@
 * [ ] proper game loop
 * [ ] velocity instead of linear interp.?
 * [ ] saving/serialising
+* [ ] type annotations
