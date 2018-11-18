@@ -41,6 +41,9 @@ class Scene(Observer, Subject):
         self.background = background.convert()
         self.background.fill(colour)
     
+    def setBackgroundColor(self, color):
+        self.setBackgroundColour(color)
+
     def setBackgroundImage(self, imgName):
         img, rect = loadImg(os.path.join('background', imgName))
         self.background = img.convert()
