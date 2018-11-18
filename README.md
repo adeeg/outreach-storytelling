@@ -4,6 +4,10 @@
 `pip install pygame`
 `python3 app/core.py`
 
+## Uploading to Trinket
+`python3 one_folder.py`
+Upload all files in `\upload`,`\assets`,`\data` to Trinket.
+
 ## TODO:
 * [x] emoji starting pos
 * [x] different emoji

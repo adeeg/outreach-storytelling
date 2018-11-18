@@ -55,15 +55,12 @@ def listToFile(fileName: str, contents: []):
 """
     Process
 """
-# TODO: delete folder
 makeUploadFold()
 
 def processFolder(path: str):
     x = os.listdir(path)
-    print(x)
     x = filterPy(x)
     x = filterInit(x)
-    print(x)
 
     for f in x:
         copyModFile(f, path)
@@ -77,7 +74,3 @@ def copyModFile(fileName: str, parentPath: str):
     listToFile(uploadDir + '/' + fileName, f)
 
 processFolder(appDir)
-
-""" y = fileToList(appDir + '/core.py')
-y = filterImport(y)
-listToFile(uploadDir + '/core.py', y) """
