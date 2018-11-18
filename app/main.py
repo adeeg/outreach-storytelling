@@ -15,24 +15,10 @@ g = Game()
 """
 
 def setup(game: Game):
-    newScene = SceneAction()
-    newScene.setBackgroundColour(COL_RED)
-
-    newEmoji = Emoji('laughing')
-    newScene.addEmoji(newEmoji)
-    newEmoji2 = Emoji('shocked')
-    newScene.addEmoji(newEmoji2)
-
-    newScene.addAction(ActionText(1000, 'This is some text!'))
-    newScene.addAction(ActionMove(1000, newEmoji, Vector2(100, 150)))
-    newScene.addAction(ActionScale(1000, newEmoji, 2))
-    newScene.addAction(ActionWait(1000))
-    newScene.addAction(ActionMove(1000, newEmoji, Vector2(200, 300)))
-    newScene.addAction(ActionWait(1000))
-    #newScene.addAction(ActionText(1000, 'dog'))
-    #newScene.addAction(ActionMove(1500, newEmoji, Vector2(200, 300)))
-
-    game.addScene(newScene)
+    print("Hello World!")
+    """ scene = SceneAction()
+    scene.setBackgroundColor(COL_BLUE)
+    game.addScene(scene) """
 
 # ----------------------------------------------------------------------
 

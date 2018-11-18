@@ -29,10 +29,10 @@ class Game(Observer):
     def __init__(self):
         self.begun = False
         self.scenes = []
-        self.sceneIndex = 0
+        self.sceneIndex = -1
 
     def start(self):
-        if not self.begun:
+        if not self.begun and not self.isFinished():
             self.getCurrentScene().start(screen)
             self.begun = True
 
@@ -52,6 +52,9 @@ class Game(Observer):
         return None if self.sceneIndex == -1 else self.scenes[self.sceneIndex]
 
     def addScene(self, scene):
+        # for if we start without adding a scene
+        self.sceneIndex = 0
+        
         scene.addObserver(self)
         self.scenes.append(scene)
 
