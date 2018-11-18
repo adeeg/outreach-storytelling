@@ -84,12 +84,12 @@ class ActionScale(Action):
     def __init__(self, duration, emoji, scale):
         super().__init__(duration)
         self.emoji = emoji
-        self.startImage = emoji.image
         self.scale = scale
         self.c = 0
     
     def start(self, scene):
         super().start(scene)
+        self.startImage = self.emoji.image
         self.startSize = fromTuple(self.emoji.image.get_size())
         self.endSize = self.startSize.mult(self.scale)
     
@@ -104,7 +104,7 @@ class ActionScale(Action):
 
 # flips an emoji
 class ActionFlip(Action):
-    def __init__(self, duration, emoji, vert, horz):
+    def __init__(self, duration, emoji, vert: bool, horz: bool):
         super().__init__(duration)
         self.emoji = emoji
         self.vert = vert
@@ -112,6 +112,7 @@ class ActionFlip(Action):
     
     def start(self, scene):
         super().start(scene)
+        self.emoji.image = pygame.transform.flip(self.emoji.image, self.vert, self.horz)
         #self.emoji.image = pygame.transform.flip(self.emoji.image, self.vert, self.horz)
         #self.emoji.image = pygame.transform.rotate(self.emoji.image, 45)
 
