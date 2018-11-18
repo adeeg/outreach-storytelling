@@ -18,6 +18,7 @@
 * [ ] shake, blur
 * [ ] things like scale
 * [ ] 'concurrent' actions
+* [ ] move emoji through a path
 
 
 * [ ] remove old stuff

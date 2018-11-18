@@ -10,7 +10,7 @@ if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
 from internal.scene_action import SceneAction
-from internal.action import ActionWait, ActionMove, ActionText
+from internal.action import ActionWait, ActionMove, ActionText, ActionScale
 from internal.drawable.emoji import Emoji
 from util.observer import Observer, Event
 from util.timer import Timer
@@ -85,6 +85,7 @@ newScene.addEmoji(newEmoji2)
 
 newScene.addAction(ActionText(5000, 'This is some text!'))
 newScene.addAction(ActionMove(1000, newEmoji, Vector2(100, 150)))
+newScene.addAction(ActionScale(1000, newEmoji, 2))
 newScene.addAction(ActionWait(1000))
 newScene.addAction(ActionMove(1000, newEmoji, Vector2(200, 300)))
 newScene.addAction(ActionWait(1000))
