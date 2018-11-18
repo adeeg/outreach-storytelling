@@ -35,6 +35,8 @@ class Game(Observer):
         if not self.begun and not self.isFinished():
             self.getCurrentScene().start(screen)
             self.begun = True
+        if not self.isFinished():
+            print("Game has no scenes! Have you remembered to put 'game.addScene([scene_var])'?")
 
     def loop(self):
         if self.begun:

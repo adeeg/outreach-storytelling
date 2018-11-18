@@ -13,6 +13,10 @@ class SceneAction(Scene):
         act = self.getCurAction()
         if act != None:
             act.start(self)
+        else:
+            print("Scene has no actions! Have you remembered to put '[scene_var].addAction([action_var])'?")
+            self.isFinished = True
+            self.notify(self, Event.SCENE_FINISHED)
     
     def update(self):
         act = self.getCurAction()

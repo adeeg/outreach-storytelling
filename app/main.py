@@ -16,9 +16,9 @@ g = Game()
 
 def setup(game: Game):
     print("Hello World!")
-    """ scene = SceneAction()
+    scene = SceneAction()
     scene.setBackgroundColor(COL_BLUE)
-    game.addScene(scene) """
+    game.addScene(scene)
 
 # ----------------------------------------------------------------------
 
