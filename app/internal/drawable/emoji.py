@@ -2,7 +2,7 @@ import pygame, os
 from util.pygame_helper import loadImg
 from util.timer import Timer
 from util.vector2 import Vector2
-from util.math import lerp
+from util.math_helper import lerp
 from util.observer import Subject, Event
 
 class Emoji(pygame.sprite.Sprite, Subject):

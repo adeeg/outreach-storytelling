@@ -1,14 +1,20 @@
 # outreach-storytelling
 
 ## Install
+
 `pip install pygame`
 `python3 app/core.py`
 
 ## Uploading to Trinket
-`python3 one_folder.py`
-Upload all files in `\upload`,`\assets`,`\data` to Trinket.
+
+* `python3 one_folder.py`
+* Upload all files in `\upload`, to 
+Trinket
+* Rename any `.txt` on Trinket to `.json` (pls let me upload `.json`)
+* Upload all images in `\assets` to Trinket
 
 ## TODO:
+
 * [x] emoji starting pos
 * [x] different emoji
 * [x] waiting

@@ -3,7 +3,7 @@
 from util.timer import Timer
 from util.observer import Subject, Event
 #from app.util.timer import Timer
-from util.math import lerp
+from util.math_helper import lerp
 from util.vector2 import Vector2, fromTuple
 from internal.drawable.text import Text
 import pygame

@@ -3,6 +3,7 @@ import os, re, copy, shutil
 startDir = os.getcwd()
 uploadDir = startDir + '/upload'
 appDir = startDir + '/app'
+dataDir = startDir + '/data'
 
 toRemove = ['internal.', 'util.', 'drawable.']
 
@@ -30,6 +31,11 @@ def filterImport(contents: []):
         xNew = copy.copy(x)
         for r in toRemove:
             xNew = xNew.replace(r, '')
+        # also replace this one line
+        xNew = xNew.replace('../data/', '')
+        # ..this too
+        xNew = xNew.replace('../assets/', '')
+        xNew = xNew.replace('../assets', '')
         newCont.append(xNew)
     return newCont
 
@@ -73,4 +79,17 @@ def copyModFile(fileName: str, parentPath: str):
     f = filterImport(f)
     listToFile(uploadDir + '/' + fileName, f)
 
+def copyData():
+    for x in os.listdir(dataDir):
+        name = dataDir + '/' + x
+        l = []
+        with open(name, 'r') as f:
+            l = f.readlines()
+            f.close()
+        
+        with open(uploadDir + '/' + x.replace('.json', '.txt'), 'w') as f:
+            f.writelines(l)
+            f.close()
+
 processFolder(appDir)
+copyData()
