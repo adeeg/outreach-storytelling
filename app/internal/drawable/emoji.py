@@ -16,7 +16,8 @@ class Emoji(pygame.sprite.Sprite, Subject):
         self.visible = True
         self.rotation = 0
         
-        self.image, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
+        self.origImage, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
+        self.image = self.origImage
         self.rect.x = startCoord.x
         self.rect.y = startCoord.y
 
@@ -30,8 +31,8 @@ class Emoji(pygame.sprite.Sprite, Subject):
         return Vector2(self.rect.x, self.rect.y)
     
     def setRotation(self, newRot):
-        rotDiff = newRot - self.rotation
-        self.image = pygame.transform.rotate(self.image, rotDiff)
+        #rotDiff = newRot - self.rotation
+        #self.image = pygame.transform.rotate(self.origImage, rotDiff)
         self.rotation = newRot
     
     def getRotation(self):

@@ -1,5 +1,5 @@
 from internal.scene_action import SceneAction
-from internal.action import ActionWait, ActionMove, ActionText, ActionScale, ActionFlip
+from internal.action import ActionWait, ActionMove, ActionText, ActionScale, ActionFlip, ActionRotate
 from internal.drawable.emoji import Emoji
 from util.vector2 import Vector2
 from util.config import COL_WHITE, COL_BLACK, COL_RED, COL_ORANGE, COL_YELLOW, COL_BLUE, COL_GREEN
@@ -20,6 +20,7 @@ def setup(game: Game):
     scene1 = SceneAction()
     scene1.setBackgroundColor(COL_BLUE)
     laugh = Emoji('laughing', Vector2(100, 100))
+    scene1.addAction(ActionRotate(1000, laugh, 360))
     scene1.addAction(ActionFlip(1000, laugh, True, True))
     scene1.addEmoji(laugh)
     scene1.addAction(ActionScale(1000, laugh, 2))

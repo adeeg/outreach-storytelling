@@ -26,7 +26,7 @@ Trinket
 * [ ] music/sounds
 * [ ] effects
 * [ ] shake, blur
-* [ ] things like scale
+* [x] things like scale
 * [ ] 'concurrent' actions
 * [ ] move emoji through a path
 

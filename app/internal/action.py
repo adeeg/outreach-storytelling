@@ -130,11 +130,30 @@ class ActionRotate(Action):
     
     def update(self, scene):
         super().update(scene)
-        self.emoji.setRotation(self.emoji.getRotation() + 1)
+
+        #loc = self.emoji.image.get_rect().center
+
+        
+        #print(self.emoji.getRotation())
+
+        #loc = self.image.get_rect().center
+        
+        #self.image.get_rect().center = loc
+
+        #self.emoji.image.get_rect().center = loc
         #amount = self.angle * self.timer.timeThrough() / self.duration
         #print(self.startRot + amount)
         #self.emoji.setRotation(int(self.startRot + amount))
+        #amnt = self.emoji.getRotation() / self.endRot
+        amnt = self.timer.perctThrough() * (self.endRot - self.startRot)
+        print(amnt)
+        #diff = new - self.emoji.rot
+        #self.emoji.setRotation(amnt)
+        self.emoji.image = pygame.transform.rotate(self.emoji.origImage, amnt)
+
+        #self.emoji.setRotation(newRot)
     
     def end(self, scene):
         super().end(scene)
-        self.emoji.setRotation(self.endRot)
+        #self.emoji.setRotation(self.endRot)
+        self.emoji.image = pygame.transform.rotate(self.emoji.origImage, self.endRot)
