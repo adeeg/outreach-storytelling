@@ -22,11 +22,11 @@ class Emoji(pygame.sprite.Sprite, Subject):
 
         self.lastPos = startCoord
     
-    def setPos(self, coord):
+    def setPos(self, coord: Vector2):
         self.rect.x = coord.x
         self.rect.y = coord.y
     
-    def getPos(self):
+    def getPos(self) -> Vector2:
         return Vector2(self.rect.x, self.rect.y)
     
     def setRotation(self, newRot):

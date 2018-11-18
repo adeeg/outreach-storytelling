@@ -84,19 +84,20 @@ class ActionScale(Action):
     def __init__(self, duration, emoji, scale):
         super().__init__(duration)
         self.emoji = emoji
+        self.startImage = emoji.image
         self.scale = scale
+        self.c = 0
     
     def start(self, scene):
         super().start(scene)
         self.startSize = fromTuple(self.emoji.image.get_size())
         self.endSize = self.startSize.mult(self.scale)
-        print(self.endSize)
     
+    """ TODO: inflate pos? """
     def update(self, scene):
         super().update(scene)
-        newSize = lerp(self.startSize, self.endSize, self.timer.timeThrough() / self.duration)
-        self.emoji.image = pygame.transform.scale(self.emoji.image, newSize.operation(int).toTuple())
-        self.emoji.rect.size = newSize.operation(int).toTuple()
+        newSize = lerp(self.startSize, self.endSize, self.timer.timeThrough() / self.duration).operation(int)
+        self.emoji.image = pygame.transform.smoothscale(self.startImage, newSize.operation(int).toTuple())
     
     def end(self, scene):
         super().end(scene)
