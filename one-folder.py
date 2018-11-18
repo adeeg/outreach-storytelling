@@ -1,4 +1,4 @@
-import os, re, copy
+import os, re, copy, shutil
 
 startDir = os.getcwd()
 uploadDir = startDir + '/upload'
@@ -14,8 +14,8 @@ def filterPy(files: []):
     return list(filter(filt.match, files))
 
 def filterInit(files: []):
-    filt = re.compile('[^__init__.py]')
-    return list(filter(filt.match, files))
+    #filt = re.compile('[^__init__]')
+    return list(filter(lambda x: x != '__init__.py', files))
 
 def filterFolders(path: str) -> []:
     fold = []
@@ -37,13 +37,15 @@ def filterImport(contents: []):
     IO
 """
 def makeUploadFold():
-    if not os.path.isdir(uploadDir):
-        os.mkdir(uploadDir)
+    if os.path.isdir(uploadDir):
+        shutil.rmtree(uploadDir)
+    os.mkdir(uploadDir)
 
 def fileToList(fileName: str):
     f = open(fileName, 'r')
-    # TODO: close
-    return f.readlines()
+    l = f.readlines()
+    f.close()
+    return l
 
 def listToFile(fileName: str, contents: []):
     with open(fileName, 'w') as f:
@@ -53,13 +55,14 @@ def listToFile(fileName: str, contents: []):
 """
     Process
 """
+# TODO: delete folder
 makeUploadFold()
 
 def processFolder(path: str):
     x = os.listdir(path)
     print(x)
-    x = filterInit(x)
     x = filterPy(x)
+    x = filterInit(x)
     print(x)
 
     for f in x:
