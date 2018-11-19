@@ -23,6 +23,10 @@ class Emoji(pygame.sprite.Sprite, Subject):
 
         self.lastPos = startCoord
     
+    def changeImage(self, image: str):
+        self.origImage, self.rect = loadImg(os.path.join(self.IMG_PREFIX, str(image)))
+        self.image = self.origImage
+
     def setPos(self, coord: Vector2):
         self.rect.x = coord.x
         self.rect.y = coord.y

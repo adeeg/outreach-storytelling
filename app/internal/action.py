@@ -157,3 +157,21 @@ class ActionRotate(Action):
         super().end(scene)
         #self.emoji.setRotation(self.endRot)
         self.emoji.image = pygame.transform.rotate(self.emoji.origImage, self.endRot)
+
+# change the image of an emoji
+# TODO: does not work properly. emoji needs to track modifications to image
+class ActionChange(Action):
+    def __init__(self, emoji, name: str):
+        super().__init__(100)
+        self.emoji = emoji
+        self.name = name
+    
+    def start(self, scene):
+        super().start(scene)
+    
+    def update(self, scene):
+        super().update(scene)
+    
+    def end(self, scene):
+        super().end(scene)
+        self.emoji.changeImage(self.name)
