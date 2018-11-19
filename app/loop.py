@@ -75,5 +75,5 @@ class Game(Observer):
         scene = self.getCurrentScene()
         if scene != None and scene == entity:
             if  event == Event.SCENE_FINISHED:
-                print("scene finished!")
+                print("Scene finished!")
                 self.nextScene()

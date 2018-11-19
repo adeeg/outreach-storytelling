@@ -36,6 +36,7 @@ def filterImport(contents: []):
         # ..this too
         xNew = xNew.replace('../assets/', '')
         xNew = xNew.replace('../assets', '')
+        xNew = xNew.replace('"emoji"', '""')
         newCont.append(xNew)
     return newCont
 
