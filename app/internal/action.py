@@ -1,5 +1,3 @@
-
-
 from util.timer import Timer
 from util.observer import Subject, Event
 #from app.util.timer import Timer
@@ -40,6 +38,7 @@ class ActionMove(Action):
         super().__init__(duration)
         self.emoji = emoji
         self.coord = coord
+        self.emoji.manip.append(self)
 
     def start(self, scene):
         super().start(scene)
@@ -86,6 +85,7 @@ class ActionScale(Action):
         self.emoji = emoji
         self.scale = scale
         self.c = 0
+        self.emoji.manip.append(self)
     
     def start(self, scene):
         super().start(scene)
@@ -175,6 +175,8 @@ class ActionChange(Action):
     def end(self, scene):
         super().end(scene)
         self.emoji.changeImage(self.name)
+        for x in self.emoji.manip:
+            self.emoji.applyAction(x)
 
 class ActionChangeBGCol(Action):
     """ col :: (int, int, int)
