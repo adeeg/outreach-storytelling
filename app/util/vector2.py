@@ -12,6 +12,21 @@ class Vector2():
     def __repr__(self):
         return "Vector2[" + str(self.x) + ", " + str(self.y) + "]"
     
+    def __add__(self, other):
+        return self.add(other)
+    
+    def __sub__(self, other):
+        return self.sub(other)
+    
+    def __neg__(self):
+        return Vector2(-self.x, -self.y)
+    
+    def __mul__(self, other):
+        self.__rmul__(other)
+    
+    def __rmul__(self, other):
+        return Vector2(self.x * other, self.y * other)
+    
     def add(self, vec):
         return Vector2(self.x + vec.x, self.y + vec.y)
     

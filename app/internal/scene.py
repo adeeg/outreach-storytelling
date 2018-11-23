@@ -36,10 +36,14 @@ class Scene(Observer, Subject):
     def isFinished(self):
         return self.finished
     
+    def getBackgroundColour(self):
+        return self.bgcol
+    
     def setBackgroundColour(self, colour):
         background = pygame.Surface((800, 600))
         self.background = background.convert()
         self.background.fill(colour)
+        self.bgcol = colour
     
     def setBackgroundColor(self, color):
         self.setBackgroundColour(color)

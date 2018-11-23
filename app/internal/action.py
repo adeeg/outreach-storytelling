@@ -175,3 +175,26 @@ class ActionChange(Action):
     def end(self, scene):
         super().end(scene)
         self.emoji.changeImage(self.name)
+
+class ActionChangeBGCol(Action):
+    """ col :: (int, int, int)
+    """
+    def __init__(self, duration: float, col: (int)):
+        super().__init__(duration)
+        self.colS = (0, 0, 0)
+        self.col = col
+    
+    def start(self, scene):
+        super().start(scene)
+        self.colS = scene.getBackgroundColour()
+    
+    def update(self, scene):
+        super().update(scene)
+        colN = [0, 0, 0]
+        for i in range(0, len(colN)):
+            colN[i] = lerp(self.colS[i], self.col[i], self.timer.timeThrough() / self.duration)
+        scene.setBackgroundColour(tuple(colN))
+    
+    def end(self, scene):
+        super().end(scene)
+        scene.setBackgroundColour(self.col)

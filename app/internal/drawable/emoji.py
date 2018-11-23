@@ -20,7 +20,7 @@ class Emoji(pygame.sprite.Sprite, Subject):
         self.image = self.origImage
         self.rect.x = startCoord.x
         self.rect.y = startCoord.y
-
+        
         self.lastPos = startCoord
     
     def changeImage(self, image: str):
