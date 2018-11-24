@@ -6,13 +6,15 @@ class Text(Drawable):
     TEXT_SPACE = 60
 
     def __init__(self, text):
-        self.font = pygame.font.Font(None, 100)
+        #self.font = pygame.font.Font(None, 100)
+        self.font = pygame.font.SysFont('ubuntumono', 100)
+        #print(pygame.font.get_fonts())
 
         self.text = text
         self.textList = self.wordWrap(text)
         self.textSurfaces = []
         for s in self.textList:
-            print(s)
+            #print(s)
             str = ' '.join(s)
             self.textSurfaces.append(self.font.render(str, 1, (255, 255, 255)))
 

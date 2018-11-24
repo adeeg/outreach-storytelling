@@ -4,7 +4,7 @@ from util.observer import Subject, Event
 from util.math_helper import lerp
 from util.vector2 import Vector2, fromTuple
 from internal.drawable.text import Text
-import pygame
+import pygame, copy, time
 
 class Action(Subject):
     """ duration :: Num
@@ -30,6 +30,29 @@ class ActionWait(Action):
     def __init__(self, duration):
         super().__init__(duration)
 
+class ActionChangeBGCol(Action):
+    """ col :: (int, int, int)
+    """
+    def __init__(self, duration: float, col: (int)):
+        super().__init__(duration)
+        self.colS = (0, 0, 0)
+        self.col = col
+    
+    def start(self, scene):
+        super().start(scene)
+        self.colS = scene.getBackgroundColour()
+    
+    def update(self, scene):
+        super().update(scene)
+        colN = [0, 0, 0]
+        for i in range(0, len(colN)):
+            colN[i] = lerp(self.colS[i], self.col[i], self.timer.timeThrough() / self.duration)
+        scene.setBackgroundColour(tuple(colN))
+    
+    def end(self, scene):
+        super().end(scene)
+        scene.setBackgroundColour(self.col)
+
 class ActionMove(Action):
     """ emoji :: emoji
         coord :: (Num, Num)
@@ -38,11 +61,11 @@ class ActionMove(Action):
         super().__init__(duration)
         self.emoji = emoji
         self.coord = coord
-        self.emoji.manip.append(self)
 
     def start(self, scene):
         super().start(scene)
         self.startPos = self.emoji.getPos()
+        self.emoji.manip.append(self)
     
     def update(self, scene):
         super().update(scene)
@@ -84,23 +107,24 @@ class ActionScale(Action):
         super().__init__(duration)
         self.emoji = emoji
         self.scale = scale
-        self.c = 0
-        self.emoji.manip.append(self)
     
     def start(self, scene):
         super().start(scene)
         self.startImage = self.emoji.image
         self.startSize = fromTuple(self.emoji.image.get_size())
         self.endSize = self.startSize.mult(self.scale)
+        self.emoji.manip.append(self)
     
     """ TODO: inflate pos? """
     def update(self, scene):
         super().update(scene)
         newSize = lerp(self.startSize, self.endSize, self.timer.timeThrough() / self.duration).operation(int)
-        self.emoji.image = pygame.transform.smoothscale(self.startImage, newSize.operation(int).toTuple())
+        self.emoji.setSize(newSize)
+        #self.emoji.image = pygame.transform.smoothscale(self.startImage, newSize.operation(int).toTuple())
     
     def end(self, scene):
         super().end(scene)
+        self.emoji.origImage = self.emoji.image
 
 # flips an emoji
 class ActionFlip(Action):
@@ -112,9 +136,21 @@ class ActionFlip(Action):
     
     def start(self, scene):
         super().start(scene)
-        self.emoji.image = pygame.transform.flip(self.emoji.image, self.vert, self.horz)
+        self.emoji.manip.append(self)
         #self.emoji.image = pygame.transform.flip(self.emoji.image, self.vert, self.horz)
         #self.emoji.image = pygame.transform.rotate(self.emoji.image, 45)
+    
+    def end(self, scene):
+        super().end(scene)
+        self.emoji.image = pygame.transform.flip(self.emoji.image, self.vert, self.horz)
+
+class ActionFlipHorz(ActionFlip):
+    def __init__(self, duration, emoji):
+        super().__init__(duration, emoji, False, True)
+
+class ActionFlipVert(ActionFlip):
+    def __init__(self, duration, emoji):
+        super().__init__(duration, emoji, True, False)
 
 # rotates an emoji by an amount
 class ActionRotate(Action):
@@ -127,6 +163,8 @@ class ActionRotate(Action):
         super().start(scene)
         self.startRot = self.emoji.getRotation()
         self.endRot = self.startRot + self.angle
+        self.emoji.manip.append(self)
+        #self.startImage = copy.copy(self.emoji.image)
     
     def update(self, scene):
         super().update(scene)
@@ -146,23 +184,25 @@ class ActionRotate(Action):
         #self.emoji.setRotation(int(self.startRot + amount))
         #amnt = self.emoji.getRotation() / self.endRot
         amnt = self.timer.perctThrough() * (self.endRot - self.startRot)
-        print(amnt)
+        #print(amnt)
         #diff = new - self.emoji.rot
-        #self.emoji.setRotation(amnt)
-        self.emoji.image = pygame.transform.rotate(self.emoji.origImage, amnt)
+        self.emoji.setRotation(amnt)
+        #self.emoji.image = pygame.transform.rotate(self.startImage, amnt)
 
         #self.emoji.setRotation(newRot)
     
     def end(self, scene):
         super().end(scene)
+        self.emoji.origImage = self.emoji.image
+        self.emoji.setRotation(self.endRot)
         #self.emoji.setRotation(self.endRot)
-        self.emoji.image = pygame.transform.rotate(self.emoji.origImage, self.endRot)
+        #self.emoji.image = pygame.transform.rotate(self.emoji.origImage, self.endRot)
 
 # change the image of an emoji
 # TODO: does not work properly. emoji needs to track modifications to image
 class ActionChange(Action):
     def __init__(self, emoji, name: str):
-        super().__init__(100)
+        super().__init__(1000)
         self.emoji = emoji
         self.name = name
     
@@ -175,28 +215,6 @@ class ActionChange(Action):
     def end(self, scene):
         super().end(scene)
         self.emoji.changeImage(self.name)
+        #print("change")
         for x in self.emoji.manip:
             self.emoji.applyAction(x)
-
-class ActionChangeBGCol(Action):
-    """ col :: (int, int, int)
-    """
-    def __init__(self, duration: float, col: (int)):
-        super().__init__(duration)
-        self.colS = (0, 0, 0)
-        self.col = col
-    
-    def start(self, scene):
-        super().start(scene)
-        self.colS = scene.getBackgroundColour()
-    
-    def update(self, scene):
-        super().update(scene)
-        colN = [0, 0, 0]
-        for i in range(0, len(colN)):
-            colN[i] = lerp(self.colS[i], self.col[i], self.timer.timeThrough() / self.duration)
-        scene.setBackgroundColour(tuple(colN))
-    
-    def end(self, scene):
-        super().end(scene)
-        scene.setBackgroundColour(self.col)
