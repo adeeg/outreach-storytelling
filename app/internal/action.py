@@ -218,3 +218,18 @@ class ActionChange(Action):
         #print("change")
         for x in self.emoji.manip:
             self.emoji.applyAction(x)
+
+class ActionMakeVisible(Action):
+    def __init__(self, emoji, visible=True):
+        super().__init__(1)
+        self.emoji = emoji, self.visible = visible
+    
+    def start(self, scene):
+        super().start(scene)
+    
+    def update(self, scene):
+        super().update(scene)
+    
+    def end(self, scene):
+        super().end(scene)
+        self.emoji.visible = self.visible
