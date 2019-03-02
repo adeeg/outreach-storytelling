@@ -16,9 +16,14 @@ class Scene(Observer, Subject):
         self.actionIndex = 0
 
     def start(self, screen):
-        screen.blit(self.background, (0, 0))
-        pygame.display.flip()
-        pygame.display.update()
+        if self.background == None:
+            print("Scene has no background! Have you remembered to put '[scene_var].setBackgroundColour([COL_...])'?")
+            self.isFinished = True
+            self.notify(self, Event.SCENE_FINISHED)
+        else:
+            screen.blit(self.background, (0, 0))
+            pygame.display.flip()
+            pygame.display.update()
     
     def update(self):
         pass
