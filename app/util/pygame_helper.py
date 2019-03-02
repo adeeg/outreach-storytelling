@@ -4,6 +4,7 @@ IMG_MISSING = 'missing'
 
 # thanks https://www.pygame.org/docs/tut/tom_games3.html#makegames-3-1
 def loadImg(name):
+    name = name.lower()
     fullname = os.path.join('../assets', name + ".png")
     try:
         image = pygame.image.load(fullname)
