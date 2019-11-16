@@ -1,5 +1,6 @@
 import pygame
 from internal.scene import Scene
+from internal.action import ActionWait
 from util.observer import Event
 
 class SceneAction(Scene):
@@ -10,6 +11,9 @@ class SceneAction(Scene):
     
     def start(self, screen):
         super().start(screen)
+
+        self.addAction(ActionWait(1000))
+
         act = self.getCurAction()
         if act != None:
             act.start(self)
